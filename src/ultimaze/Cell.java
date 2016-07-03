@@ -29,6 +29,8 @@ public class Cell {
         left = top = right = bottom = true;
     }
     
+    
+    
     public void breakWall(int w)
     {
         switch(w)
@@ -48,9 +50,5 @@ public class Cell {
     {
         visited = true;
     }
-    
-    boolean isVisited()
-    {
-        return visited;
-    }
+  
 }

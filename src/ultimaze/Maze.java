@@ -1,6 +1,7 @@
 
 package ultimaze;
 
+import java.awt.Color;
 import java.util.Random;
 import library.*;
 
@@ -47,6 +48,7 @@ public class Maze
    
    
    //generate the Randomized maze(with given specification(DIMENSION))
+   //NOTICE: this is actually DFS!!!...(remember that in recursion..we do backtrack!)
    void generate_maze(int X,int Y)
    {
        cells[X][Y].setVisited(true);
@@ -84,6 +86,92 @@ public class Maze
           }
       }
    }
+   
+   
+   public void solve(int X,int Y)
+   {
+       if(X==0 || Y==0 || X == (dimension+1) || Y == (dimension+1))
+           return;
+       if(cells[X][Y].visited)
+           return;
+       
+       if(X==(dimension+1) && (Y==dimension+1))
+           return;
+       
+        StdDraw.setPenColor(StdDraw.RED);
+        StdDraw.filledCircle(X + 0.5, Y + 0.5, 0.25);
+        StdDraw.show();
+        //StdDraw.pause(30);
+       
+        cells[X][Y].visited=true;
+        if(cells[X][Y].left==false)
+        {
+            if(!cells[X-1][Y].visited)
+              cells[X-1][Y].parent=Direction.RIGHT;
+            solve(X-1, Y);
+            
+        }
+        
+        if(cells[X][Y].top ==false)
+        {   if(!cells[X][Y+1].visited)
+             cells[X][Y+1].parent=Direction.DOWN;
+            solve(X, Y+1);
+        }
+        if(cells[X][Y].right==false)
+        {
+            if(!cells[X+1][Y].visited)
+              cells[X+1][Y].parent = Direction.LEFT;
+            solve(X+1, Y);
+        }
+        if(cells[X][Y].bottom == false)
+        {
+            if(!cells[X][Y-1].visited)
+              cells[X][Y-1].parent=Direction.TOP;
+            solve(X, Y-1);
+        }
+        
+        StdDraw.setPenColor(StdDraw.GREEN);
+        StdDraw.filledCircle(X + 0.5, Y + 0.5, 0.30);
+        StdDraw.show();
+        //StdDraw.pause(30);
+       
+   }
+   
+   public void trace_shortest_path()
+   {
+       int X = dimension;
+       int Y = dimension;
+       
+       while(true)
+       {
+           StdDraw.setPenColor(Color.BLACK);
+           StdDraw.filledCircle(X + 0.5, Y + 0.5, 0.30);
+           StdDraw.show();
+           StdDraw.pause(75);
+           
+           if(cells[X][Y].parent==Direction.LEFT)
+               X--;
+           else if(cells[X][Y].parent==Direction.TOP)
+               Y++;
+           else if(cells[X][Y].parent==Direction.RIGHT)
+               X++;
+           else if(cells[X][Y].parent==Direction.DOWN)
+               Y--;
+           
+       }
+       
+   }
+   
+   
+   public void setAllUnvisited()
+   {
+       for(int i=1;i<=dimension;i++)
+         for(int j=1;j<=dimension;j++)
+             cells[i][j].visited=false;
+   }
+   
+   
+   
    
    boolean hasUnvisitedNeighbor(int X,int Y)
    {

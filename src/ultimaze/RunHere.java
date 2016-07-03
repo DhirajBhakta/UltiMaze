@@ -15,11 +15,11 @@ public class RunHere {
     
     public static void main(String args[])
     {
-        int n=50;
-        Maze maze = new Maze(50);
+        int n=20;
+        Maze maze = new Maze(n);
         
-        StdDraw.setXscale(0, n+5);
-        StdDraw.setYscale(0,n+5);
+        StdDraw.setXscale(0, n+2);
+        StdDraw.setYscale(0,n+2);
           StdDraw.enableDoubleBuffering();
          
 
@@ -27,8 +27,7 @@ public class RunHere {
       StdDraw.setPenColor(StdDraw.RED);
         StdDraw.filledCircle(n/2.0 + 0.5, n/2.0 + 0.5, 0.375);
         StdDraw.filledCircle(1.5, 1.5, 0.375);
-        StdDraw.line(1, 0, 30, 30);
-
+        
         StdDraw.setPenColor(StdDraw.BLACK);
         
         
@@ -46,6 +45,11 @@ public class RunHere {
         }
         StdDraw.pause(500);
         StdDraw.show();
+        
+        
+        maze.setAllUnvisited();
+        maze.solve(1, 1);
+        maze.trace_shortest_path();
         
     }
     
