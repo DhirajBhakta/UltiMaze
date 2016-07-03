@@ -7,6 +7,8 @@ package ultimaze;
  */
 public class Cell {
     // if these Boolean values(left,up,right,down) are true--> then the corresponding Wall exists.
+    int i,j;
+    
     boolean left;
     boolean top;
     boolean right;
@@ -24,8 +26,10 @@ public class Cell {
     //Whenever a Cell is created for the Purpose of MAZE GENERATION..
     //initially all its four walls are blocked...(Totally blocked MAZE)
     //..later on we break the walls (adjacent walls) one by one to make a maze
-    Cell()
+    Cell(int x,int y)
     {
+        i=x;
+        j=y;
         left = top = right = bottom = true;
     }
     

@@ -48,7 +48,7 @@ public class RunHere {
         
         
         maze.setAllUnvisited();
-        maze.solve(1, 1);
+        maze.BFS_solve();
         maze.trace_shortest_path();
         
     }

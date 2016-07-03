@@ -2,6 +2,8 @@
 package ultimaze;
 
 import java.awt.Color;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 import library.*;
 
@@ -31,7 +33,7 @@ public class Maze
        for(int i=0;i<dimension+2;i++)
         {
             for(int j=0;j<dimension+2;j++)
-                cells[i][j]=new Cell();
+                cells[i][j]=new Cell(i,j);
         }
    }
    
@@ -88,7 +90,7 @@ public class Maze
    }
    
    
-   public void solve(int X,int Y)
+   public void DFS_solve(int X,int Y)
    {
        if(X==0 || Y==0 || X == (dimension+1) || Y == (dimension+1))
            return;
@@ -108,26 +110,26 @@ public class Maze
         {
             if(!cells[X-1][Y].visited)
               cells[X-1][Y].parent=Direction.RIGHT;
-            solve(X-1, Y);
+            DFS_solve(X-1, Y);
             
         }
         
         if(cells[X][Y].top ==false)
         {   if(!cells[X][Y+1].visited)
              cells[X][Y+1].parent=Direction.DOWN;
-            solve(X, Y+1);
+            DFS_solve(X, Y+1);
         }
         if(cells[X][Y].right==false)
         {
             if(!cells[X+1][Y].visited)
               cells[X+1][Y].parent = Direction.LEFT;
-            solve(X+1, Y);
+            DFS_solve(X+1, Y);
         }
         if(cells[X][Y].bottom == false)
         {
             if(!cells[X][Y-1].visited)
               cells[X][Y-1].parent=Direction.TOP;
-            solve(X, Y-1);
+            DFS_solve(X, Y-1);
         }
         
         StdDraw.setPenColor(StdDraw.GREEN);
@@ -136,6 +138,51 @@ public class Maze
         //StdDraw.pause(30);
        
    }
+   
+   
+   public void BFS_solve()
+   {
+       int X=1,Y=1;
+       Queue<Cell> Q = new LinkedList<>();
+       Q.add(cells[1][1]);
+       cells[1][1].visited = true;
+       
+       while(!Q.isEmpty())
+       {
+           Cell C = (Cell)Q.poll();
+           
+           StdDraw.setPenColor(Color.RED);
+           StdDraw.filledCircle(C.i + 0.5,C.j + 0.5, 0.30);
+           StdDraw.show();
+           StdDraw.pause(30);
+           if(!C.left && !cells[C.i-1][C.j].visited)
+           {
+               cells[C.i-1][C.j].visited=true;
+               cells[C.i-1][C.j].parent=Direction.RIGHT;
+               Q.add(cells[C.i-1][C.j]);
+           }
+           if(!C.top && !cells[C.i][C.j+1].visited)
+           {
+               cells[C.i][C.j+1].visited=true;
+               cells[C.i][C.j+1].parent=Direction.DOWN;
+               Q.add(cells[C.i][C.j+1]);
+           }
+           if(!C.right && !cells[C.i+1][C.j].visited)
+           {
+               cells[C.i+1][C.j].visited=true;
+               cells[C.i+1][C.j].parent=Direction.LEFT;
+               Q.add(cells[C.i+1][C.j]);
+           }
+           if(!C.bottom && !cells[C.i][C.j-1].visited)
+           {
+               cells[C.i][C.j-1].visited=true;
+               cells[C.i][C.j-1].parent=Direction.TOP;
+               Q.add(cells[C.i][C.j-1]);
+           }
+        }
+       
+   }
+   
    
    public void trace_shortest_path()
    {
